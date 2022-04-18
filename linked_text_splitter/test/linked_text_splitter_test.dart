@@ -13,16 +13,19 @@ void main() {
       'joker',
     ];
 
-    void dummyAction(String s){
-
-    }
+    final hashTagList = <String>[
+      'car',
+      'bike',
+      'airplane',
+      'ship',
+    ];
 
     final splitter = LinkedTextSplitter.normal(
       linkStyle: const TextStyle(
         color: Colors.blue,
       ),
-      matchList: memberList.map((e) => '@$e'),
-      onTap: dummyAction,
+      filteredMemberList: memberList,
+      filteredHashTagList: hashTagList,
     );
 
     test('No link, no assignment.', () {
@@ -213,5 +216,33 @@ void main() {
       expect(children[4].text, ' ああああいいい ');
       expect(children[5].text, 'https://www.yahoo.co.jp');
     });
+
+    test('Linked, assigned, hashTag.', () {
+      final children = splitter.create(
+        '@king AAAAAAA http://www.google.com @joker ああああいいい #car https://www.yahoo.co.jp',
+        const TextStyle(color: Colors.red),
+      );
+      
+      expect(children.length, 8);
+      expect(children[0].style?.color, Colors.blue);
+      expect(children[1].style?.color, Colors.red);
+      expect(children[2].style?.color, Colors.blue);
+      expect(children[3].style?.color, Colors.blue);
+      expect(children[4].style?.color, Colors.red);
+      expect(children[5].style?.color, Colors.blue);
+      expect(children[6].style?.color, Colors.red);
+      expect(children[7].style?.color, Colors.blue);
+
+      expect(children[0].text, '@king');
+      expect(children[1].text, ' AAAAAAA ');
+      expect(children[2].text, 'http://www.google.com');
+      expect(children[3].text, ' @joker');
+      expect(children[4].text, ' ああああいいい');
+      expect(children[5].text, ' #car');
+      expect(children[6].text, ' ');
+      expect(children[7].text, 'https://www.yahoo.co.jp');
+    });
   });
+
+
 }
