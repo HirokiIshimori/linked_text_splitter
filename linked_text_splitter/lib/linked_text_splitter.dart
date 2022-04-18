@@ -7,22 +7,36 @@ import 'package:linked_text_splitter/model/constants.dart';
 class LinkedTextSplitter {
   final RegExp linkRegExp;
   final RegExp atSignRegExp;
+  final RegExp hashTagRegExp;
   final TextStyle linkStyle;
-  Iterable<String>? matchList;
-  final Function(String match)? onTap;
+  Iterable<String>? filteredMemberList;
+  Iterable<String>? filteredHashTagList;
+  final Function(String match)? onLinkTap;
+  final Function(String match)? onAtSignTap;
+  final Function(String match)? onHashTagTap;
 
   LinkedTextSplitter({
     required this.linkRegExp,
     required this.linkStyle,
     required this.atSignRegExp,
-    required this.matchList,
-    this.onTap,
+    required this.hashTagRegExp,
+    required this.filteredMemberList,
+    required this.filteredHashTagList,
+    this.onLinkTap,
+    this.onAtSignTap,
+    this.onHashTagTap,
   });
 
-  LinkedTextSplitter.normal(
-      {this.matchList, required this.linkStyle, required this.onTap})
-      : linkRegExp = defaultLinkRegExp,
-        atSignRegExp = defaultAtSignRegExp;
+  LinkedTextSplitter.normal({
+    this.filteredMemberList,
+    this.filteredHashTagList,
+    required this.linkStyle,
+    this.onLinkTap,
+    this.onAtSignTap,
+    this.onHashTagTap
+  }) : linkRegExp = defaultLinkRegExp,
+        atSignRegExp = defaultAtSignRegExp,
+        hashTagRegExp = defaultHashTagRegExp;
 
   static final _letters = Language.values
       .map((e) => e.letter)
@@ -38,11 +52,16 @@ class LinkedTextSplitter {
   );
 
   static final defaultAtSignRegExp = RegExp(
-    '(?:^|\\s)([#@]([$_regExp]+))',
+    '(?!\\n)(?:^|\\s)([@]([$_regExp]+))',
     multiLine: true,
   );
 
-  List<TextSpan> create(String text, TextStyle style) {
+  static final defaultHashTagRegExp = RegExp(
+    '(?!\\n)(?:^|\\s)([#]([$_regExp]+))',
+    multiLine: true,
+  );
+
+  List<TextSpan> create(String text, TextStyle? style) {
     final children = <TextSpan>[];
 
     _split(
@@ -50,17 +69,28 @@ class LinkedTextSplitter {
       regExp: linkRegExp,
       style: style,
       children: children,
-      onTap: onTap,
+      onTap: onLinkTap,
       onNonMatch: (string, children) {
         _split(
           text: string,
           regExp: atSignRegExp,
-          children: children,
           style: style,
+          children: children,
+          onTap: onAtSignTap,
+          matchList: filteredMemberList?.map((e) => '@$e'),
           onNonMatch: (string, children) {
-            children.add(TextSpan(text: string, style: style));
+            _split(
+              text: string,
+              regExp: hashTagRegExp,
+              style: style,
+              children: children,
+              onTap: onHashTagTap,
+              matchList: filteredHashTagList?.map((e) => '#$e'),
+              onNonMatch: (string, children) {
+                children.add(TextSpan(text: string, style: style));
+              },
+            );
           },
-          matchList: matchList,
         );
       },
     );
@@ -72,7 +102,7 @@ class LinkedTextSplitter {
     required String text,
     required RegExp regExp,
     required List<TextSpan> children,
-    required TextStyle style,
+    TextStyle? style,
     Function(String match)? onTap,
     Function(String, List<TextSpan> children)? onNonMatch,
     Iterable<String>? matchList,
@@ -84,6 +114,11 @@ class LinkedTextSplitter {
       return !matchList.any((e) => e == target.trim());
     }
 
+    final TapGestureRecognizer? recognizer;
+    if (onTap != null) {
+
+    }
+
     text.splitMapJoin(
       regExp,
       onMatch: (match) {
@@ -92,13 +127,13 @@ class LinkedTextSplitter {
             text: match[0],
             style:
             _checkMatch(match[0].toString()) ? style : linkStyle,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
+            recognizer: onTap != null ?
+            (TapGestureRecognizer()..onTap = () {
               final word = match[0];
-                if (onTap != null && word != null) {
+                if (word != null) {
                   onTap(word);
                 }
-              },
+            }) : null,
           ),
         );
         return '';
