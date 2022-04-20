@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:linked_text_splitter/linked_text_splitter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +51,8 @@ class _MyAppState extends State<MyApp> {
                       onAtSignTap: (value) {
                         print('Name: $value');
                       },
-                      onLinkTap: (value) {
+                      onLinkTap: (value) async {
+                        await launch(value);
                         print('Link: $value');
                       },
                       onHashTagTap: (value) {
