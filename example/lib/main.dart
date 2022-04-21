@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
       linkStyle: const TextStyle(
         color: Colors.blue,
       ),
+      memberNames: ['king', 'user'],
     );
   }
 
@@ -107,7 +108,7 @@ class LinkedTextEditingController extends TextEditingController {
       linkRegExp: LinkedTextSplitter.defaultLinkRegExp,
       atSignRegExp: LinkedTextSplitter.defaultAtSignRegExp,
       hashTagRegExp: LinkedTextSplitter.defaultHashTagRegExp,
-      filteredMemberList: memberNames?.map((e) => '@$e'),
+      filteredMemberList: memberNames,
       filteredHashTagList: null,
     );
 
