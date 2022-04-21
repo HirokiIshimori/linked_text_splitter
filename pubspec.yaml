@@ -1,6 +1,6 @@
 name: linked_text_splitter
 description: Convert text containing hyperlinks, etc., into a "TextSpan" list. It supports hyperlinks, @ marks, and hashtags like Twitter.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/HirokiIshimori/linked_text_splitter
 repository: https://github.com/HirokiIshimori/linked_text_splitter
 
