@@ -25,10 +25,6 @@ class _MyAppState extends State<MyApp> {
         color: Colors.blue,
       ),
     );
-
-    // linkedTextEditingController = TextEditingController(
-    //   text: '@user https://www.google.com #Test',
-    // );
   }
 
   @override
