@@ -73,18 +73,12 @@ class _MyAppState extends State<MyApp> {
                 height: 80,
                 child: TextField(
                   controller: linkedTextEditingController,
-                  // readOnly: true,
-                  onChanged: (value) {
-
-                  },
                   decoration: const InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red)
                     ),
                   ),
                   keyboardType: TextInputType.multiline,
-                  autofocus: false,
-
                   maxLines: 10,
                 ),
               ),
@@ -93,7 +87,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-    return const SizedBox.shrink();
   }
 }
 
