@@ -8,7 +8,6 @@
 .buildlog/
 .history
 .svn/
-*.metadata
 *.fvm
 
 # IntelliJ related
