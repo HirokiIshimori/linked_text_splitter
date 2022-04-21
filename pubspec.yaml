@@ -1,7 +1,9 @@
 name: linked_text_splitter
-description: A new Flutter package project.
+description: Convert text containing hyperlinks, etc., into a "TextSpan" list. It supports hyperlinks, @ marks, and hashtags like Twitter.
 version: 0.0.1
-homepage:
+homepage: https://github.com/HirokiIshimori/linked_text_splitter
+repository: https://github.com/HirokiIshimori/linked_text_splitter
+
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
