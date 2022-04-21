@@ -5,6 +5,21 @@ It supports hyperlinks, @ marks, and hashtags like Twitter.
 
 <img width=250, src="https://user-images.githubusercontent.com/36340609/164297956-db31d803-3e7c-436e-b707-65ba93fa74a5.gif"/>
 
+The @ marks and hashtags can also be filtered. Only matching string candidates can be link-colored.
+
+If you wish to use this feature, specify the "filteredMemberList" or "filteredHashTagList" property.
+
+```dart
+final splitter = LinkedTextSplitter(
+  linkStyle: linkStyle,
+  linkRegExp: LinkedTextSplitter.defaultLinkRegExp,
+  atSignRegExp: LinkedTextSplitter.defaultAtSignRegExp,
+  hashTagRegExp: LinkedTextSplitter.defaultHashTagRegExp,
+  filteredMemberList: ['king', 'user'],
+  filteredHashTagList: ['test'],
+);
+```
+
 ## Usage
 
 ### RichText Widget
@@ -64,7 +79,7 @@ class LinkedTextEditingController extends TextEditingController {
       linkRegExp: LinkedTextSplitter.defaultLinkRegExp,
       atSignRegExp: LinkedTextSplitter.defaultAtSignRegExp,
       hashTagRegExp: LinkedTextSplitter.defaultHashTagRegExp,
-      filteredMemberList: memberNames?.map((e) => '@$e'),
+      filteredMemberList: memberNames,
       filteredHashTagList: null,
     );
 
@@ -72,6 +87,8 @@ class LinkedTextEditingController extends TextEditingController {
   }
 }
 ```
+
+In this example, only "king" and "user" are set to blue text with the @ marks.
 
 ```dart
 @override
@@ -82,6 +99,7 @@ void initState() {
     linkStyle: const TextStyle(
       color: Colors.blue,
     ),
+    memberNames: ['king', 'user'],
   );
 }
 ```
