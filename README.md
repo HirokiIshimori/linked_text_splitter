@@ -40,6 +40,8 @@ RichText(
 
 To support TextField, create a custom TextEditingController class.
 
+This is an example.
+
 ```dart
 class LinkedTextEditingController extends TextEditingController {
   final TextStyle linkStyle;
